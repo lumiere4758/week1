@@ -1,0 +1,44 @@
+body {
+    background-color: #155dfc;
+    color: white;
+    font-family: system-ui, "Open Sans", "Helvetica Neue", sans-serif;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+a {
+    color: white;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #ffeb3b;
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    margin: 10px 5px;
+    border-radius: 8px;
+}
+
+ul {
+    padding-left: 30px;
+    margin-bottom: 20px;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.8em;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
