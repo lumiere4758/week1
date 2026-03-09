@@ -1,16 +1,27 @@
-let count = 0;
+document.addEventListener("DOMContentLoaded", () => {
+    // so umm i wnat it to work as if she scrolls and her art comes out one by one
+    // dont wanna add too much animations js a simple fade???
+    const cards = document.querySelectorAll(".card");
 
-const button = document.getElementById("treat-btn");
-const countDisplay = document.getElementById("treat-count");
 
-button.addEventListener("click", function () {
-    count++;
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            // only open the card once its taking most of the screen 
+            if (entry.isIntersecting) {
+                const cover = entry.target.querySelector(".cover-image");
+                if (cover) {
+                    cover.classList.add("revealed");
 
-    if (count === 1) {
-        button.textContent = `Clicked ${count} time!`;
-    } else {
-        button.textContent = `Clicked ${count} times!`;
-    }
+                    observer.unobserve(entry.target);
+                }
+            }
+        });
+    }, {
+        root: null,
 
-    countDisplay.textContent = count;
+        rootMargin: "-20% 0px -40% 0px",
+        threshold: 0
+    });
+
+    cards.forEach(card => revealObserver.observe(card));
 });
