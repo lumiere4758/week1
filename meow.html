@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meow Counter</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    min-height: 100vh;
+    background: #FFF8F0;
+    font-family: 'Nunito', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  #counter-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    color: #c17f24;
+    letter-spacing: 0.05em;
+  }
+  .cat-display {
+    font-size: 7rem;
+    line-height: 1;
+    animation: idleBob 3s ease-in-out infinite;
+    user-select: none;
+  }
+  @keyframes idleBob {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .cat-display.bonk {
+    animation: bonk 0.25s ease forwards, idleBob 3s ease-in-out 0.25s infinite;
+  }
+  @keyframes bonk {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.35) rotate(-8deg); }
+    60% { transform: scale(0.9) rotate(5deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+  .count-display {
+    font-family: 'Fredoka One', cursive;
+    font-size: 5.5rem;
+    color: #FF6B35;
+    line-height: 1;
+    text-shadow: 3px 3px 0 #FFD93D;
+  }
+  .count-display.bump { animation: bump 0.15s ease; }
+  @keyframes bump {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.18); }
+  }
+  .meow-btn {
+    background: #FF6B35;
+    color: white;
+    border: none;
+    padding: 1.1rem 3.5rem;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.8rem;
+    border-radius: 100px;
+    cursor: pointer;
+    box-shadow: 0 6px 0 #c94a00;
+    transition: transform 0.08s, box-shadow 0.08s;
+    letter-spacing: 0.05em;
+  }
+  .meow-btn:hover { transform: translateY(-2px); }
+  .meow-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #c94a00; }
+  .meow-label { font-size: 0.8rem; font-weight: 700; color: #c17f24; opacity: 0.5; letter-spacing: 0.12em; text-transform: uppercase; }
+  .pop-meow {
+    position: fixed;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.4rem;
+    color: #FF6B9D;
+    pointer-events: none;
+    animation: popUp 0.8s ease forwards;
+    z-index: 100;
+  }
+  @keyframes popUp {
+    0% { opacity: 1; transform: translateY(0) scale(0.8); }
+    100% { opacity: 0; transform: translateY(-70px) scale(1.1); }
+  }
+  #rick-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    text-align: center;
+    padding: 1rem;
+  }
+  #rick-screen.show { display: flex; animation: rickReveal 0.5s ease; }
+  @keyframes rickReveal {
+    0% { opacity: 0; transform: scale(0.85); }
+    60% { transform: scale(1.04); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  .rick-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(1.8rem, 6vw, 3rem);
+    color: #FF6B35;
+    text-shadow: 3px 3px 0 #FFD93D;
+  }
+  .yt-wrap {
+    width: min(560px, 92vw);
+    aspect-ratio: 16/9;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 3px solid #FF6B35;
+    box-shadow: 0 16px 50px rgba(255,107,53,0.25);
+  }
+  .yt-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+  .rick-note { font-size: 0.9rem; font-weight: 700; color: #c17f24; opacity: 0.6; }
+  .back-btn {
+    background: #FFD93D;
+    color: #2D1B00;
+    border: none;
+    padding: 0.7rem 2rem;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    border-radius: 100px;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #c9a800;
+    transition: transform 0.1s;
+  }
+  .back-btn:hover { transform: translateY(-2px); }
+  .back-btn:active { transform: translateY(3px); }
+</style>
+</head>
+<body>
+<div id="counter-screen">
+  <h1>Meow Counter</h1>
+  <div class="cat-display" id="cat">:3</div>
+  <div class="count-display" id="count">0</div>
+  <div class="meow-label">meows</div>
+  <button class="meow-btn" onclick="meow(event)">MEOW</button>
+</div>
+<div id="rick-screen">
+  <div class="rick-title">You meowed 10 times.<br>Here's your reward</div>
+  <div class="yt-wrap">
+    <video id="yt" src="rickroll.mp4" autoplay controls style="width:100%;height:100%;display:block;"></video>
+  </div>
+  <div class="rick-note">you've been meow-rolled</div>
+  <button class="back-btn" onclick="reset()">Meow Again</button>
+</div>
+<script>
+  let count = 0;
+  const cats = [':3','=^.^=','>.<','uwu',':33','o.o'];
+  function meow(e) {
+    count++;
+    const el = document.getElementById('count');
+    el.textContent = count;
+    el.classList.remove('bump');
+    void el.offsetWidth;
+    el.classList.add('bump');
+    const cat = document.getElementById('cat');
+    cat.textContent = cats[Math.floor(Math.random() * cats.length)];
+    cat.classList.remove('bonk');
+    void cat.offsetWidth;
+    cat.classList.add('bonk');
+    const pop = document.createElement('div');
+    pop.className = 'pop-meow';
+    pop.textContent = ['meow','mrrrow','purr~','mew!','MEOW'][Math.floor(Math.random()*5)];
+    pop.style.left = (e.clientX - 30 + Math.random()*40) + 'px';
+    pop.style.top = (e.clientY - 20) + 'px';
+    document.body.appendChild(pop);
+    setTimeout(() => pop.remove(), 900);
+    if (count >= 10) setTimeout(doRick, 400);
+  }
+  function doRick() {
+    document.getElementById('counter-screen').style.display = 'none';
+    const v = document.getElementById('yt');
+    v.currentTime = 0;
+    v.play();
+    document.getElementById('rick-screen').classList.add('show');
+  }
+  function reset() {
+    count = 0;
+    document.getElementById('count').textContent = '0';
+    document.getElementById('cat').textContent = ':3';
+    const v = document.getElementById('yt');
+    v.pause();
+    v.currentTime = 0;
+    document.getElementById('rick-screen').classList.remove('show');
+    document.getElementById('counter-screen').style.display = 'flex';
+  }
+</script>
+</body>
+</html>
